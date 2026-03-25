@@ -53,6 +53,30 @@ for col in categorical_cols:
     print(f"\nValue counts for {col}:")
     print(df[col].value_counts())
 
+# ==============================
+# CATEGORICAL CLEANLINESS CHECK
+# ==============================
+print("\nChecking categorical inconsistencies:")
+
+for col in categorical_cols:
+    print(f"\n--- {col} ---")
+
+    # valori unice
+    unique_vals = df[col].unique()
+    print("Unique values:", unique_vals)
+
+    # verificare spatii
+    has_spaces = df[col].str.contains(" ").sum()
+    print("Values containing spaces:", has_spaces)
+
+    # verificare lowercase/uppercase
+    print("Lowercase version:")
+    print(df[col].str.lower().value_counts())
+
+    # verificare lungimi diferite (posibil typo)
+    print("Value lengths:")
+    print(df[col].str.len().value_counts())
+
 
 # 8. DESCRIPTIVE STATISTICS
 
@@ -146,3 +170,29 @@ df['Calculated_BMI'] = df['Weight (kg)'] / (df['Height (m)'] ** 2)
 
 difference = np.abs(df['BMI'] - df['Calculated_BMI'])
 print("Average BMI difference:", difference.mean())
+
+# ==============================
+# TARGET ANALYSIS
+# ==============================
+print("\n=== TARGET ANALYSIS ===")
+
+# alege target
+target = 'Calories_Burned'   # poti schimba daca vrei
+
+print(f"Selected target: {target}")
+
+# tip problema
+if df[target].dtype in ['int64', 'float64']:
+    print("Problem type: Regression")
+else:
+    print("Problem type: Classification")
+
+# distributia targetului
+plt.figure()
+sns.histplot(df[target], bins=20, kde=True)
+plt.title(f"Distribution of {target}")
+plt.show()
+
+# corelatii cu target
+print("\nCorrelation with target:")
+print(df.corr(numeric_only=True)[target].sort_values(ascending=False))
