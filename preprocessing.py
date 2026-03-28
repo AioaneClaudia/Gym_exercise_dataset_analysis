@@ -32,4 +32,23 @@ def run_preprocessing(input_path="data/gym_members_exercise_tracking.csv"):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 
+    #4. SCALE
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
+    X_train_final = pd.DataFrame(X_train_scaled, columns=X.columns)
+    X_test_final = pd.DataFrame(X_test_scaled, columns=X.columns)
+
+    #5. Save
+    X_train_final.to_csv("data/X_train.csv", index=False)
+    X_test_final.to_csv("data/X_test.csv", index=False)
+    y_train.to_csv("data/y_train.csv", index=False)
+    y_test.to_csv("data/y_test.csv", index=False)
+
+    print(f"Preprocessing komplett! Train: {len(X_train_final)}, Test: {len(X_test_final)}")
+    return X_train_final, X_test_final, y_train, y_test
+
+if __name__ == "__main__":
+    run_preprocessing()
 
