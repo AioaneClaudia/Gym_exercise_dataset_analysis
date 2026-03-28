@@ -1,0 +1,33 @@
+#IMPORT LIBRARIES
+
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+
+def run_preprocessing(input_path="data/gym_members_exercise_tracking.csv"):
+    print("-- Start Preprocessing --")
+
+    #LOAD DATA
+    df = pd.read_csv(input_path)
+
+    #1. CLEAN - pulsul maxim nu poate fi mai mic decat media pulsului ca sa nu faca predictii gresite
+    df = df[df['Avg_BPM'] <= df['Max_BPM']].copy()
+
+    #2. ENCODE - transformarea datelor in valori numerice.
+    #LabelEncoder si One-Hot Encoding
+    le = LabelEncoder()
+    df['Gender'] = le.fit_transform(df['Gender'])
+    df = pd.get_dummies(df, columns = ['Workout_Type'], prefix = 'Type')
+
+    for col in df.columns:
+        if 'Type_' in col:
+            df[col] = df[col].astype(int)
+
+    #3. SPLIT - separarea intrebarii de raspuns.
+    target = "Workout_Frequency (days/week)"
+    X = df.drop(target, axis = 1)
+    y = df[target]
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
