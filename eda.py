@@ -11,8 +11,8 @@ plt.rcParams['figure.figsize'] = (10, 6)
 
 # 2. LOAD DATA
 
-df = pd.read_csv("D:\Claudia\PythonProjects\Gym_exercise_dataset_analysis\data\gym_members_exercise_tracking.csv")
-
+#df = pd.read_csv("D:\Claudia\PythonProjects\Gym_exercise_dataset_analysis\data\gym_members_exercise_tracking.csv")
+df = pd.read_csv("data/gym_members_exercise_tracking.csv")
 
 # 3. BASIC INFO
 
