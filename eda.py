@@ -23,12 +23,10 @@ print(df.info())
 print("\nFirst rows:")
 print(df.head())
 
-
 # 4. MISSING VALUES
 
 print("\nMissing values:")
 print(df.isnull().sum())
-
 
 # 5. DUPLICATES
 
@@ -38,11 +36,10 @@ print("\nDuplicate rows:", df.duplicated().sum())
 # 6. DATA TYPES SEPARATION
 
 numerical_cols = df.select_dtypes(include=['int64', 'float64']).columns
-categorical_cols = df.select_dtypes(include=['object']).columns
+categorical_cols = df.select_dtypes(include=['str']).columns
 
 print("\nNumerical columns:", numerical_cols)
 print("Categorical columns:", categorical_cols)
-
 
 # 7. CATEGORICAL ANALYSIS
 
@@ -114,10 +111,10 @@ plt.show()
 
 # exemplu: Calories vs alte variabile
 for col in numerical_cols:
-    if col != 'Calories_Burned':
+    if col != 'Workout_Frequency (days/week)':
         plt.figure()
-        sns.scatterplot(x=df[col], y=df['Calories_Burned'])
-        plt.title(f"{col} vs Calories_Burned")
+        sns.scatterplot(x=df[col], y=df['Workout_Frequency (days/week)'])
+        plt.title(f"{col} vs Workout_Frequency (days/week)")
         plt.show()
 
 
@@ -125,8 +122,8 @@ for col in numerical_cols:
 
 for col in categorical_cols:
     plt.figure()
-    sns.boxplot(x=df[col], y=df['Calories_Burned'])
-    plt.title(f"{col} vs Calories_Burned")
+    sns.boxplot(x=df[col], y=df['Workout_Frequency (days/week)'])
+    plt.title(f"{col} vs Workout_Frequency (days/week)")
     plt.show()
 
 
@@ -177,7 +174,7 @@ print("Average BMI difference:", difference.mean())
 print("\n=== TARGET ANALYSIS ===")
 
 # alege target
-target = 'Calories_Burned'   # poti schimba daca vrei
+target = 'Workout_Frequency (days/week)'   # poti schimba daca vrei
 
 print(f"Selected target: {target}")
 
