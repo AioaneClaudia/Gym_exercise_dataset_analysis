@@ -1,6 +1,3 @@
-# ==============================
-# 1. IMPORT LIBRARIES
-# ==============================
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -50,27 +47,27 @@ for col in categorical_cols:
     print(f"\nValue counts for {col}:")
     print(df[col].value_counts())
 
-# ==============================
+
 # CATEGORICAL CLEANLINESS CHECK
-# ==============================
+
 print("\nChecking categorical inconsistencies:")
 
 for col in categorical_cols:
     print(f"\n--- {col} ---")
 
-    # valori unice
+    # unique values
     unique_vals = df[col].unique()
     print("Unique values:", unique_vals)
 
-    # verificare spatii
+    # spaces verification
     has_spaces = df[col].str.contains(" ").sum()
     print("Values containing spaces:", has_spaces)
 
-    # verificare lowercase/uppercase
+    # lowercase/uppercase verification
     print("Lowercase version:")
     print(df[col].str.lower().value_counts())
 
-    # verificare lungimi diferite (posibil typo)
+    # verification of different lengths (posibil typo)
     print("Value lengths:")
     print(df[col].str.len().value_counts())
 
@@ -109,7 +106,7 @@ plt.show()
 
 # 12. RELATIONSHIPS (SCATTER)
 
-# exemplu: Calories vs alte variabile
+# Frequency vs other variables
 for col in numerical_cols:
     if col != 'Workout_Frequency (days/week)':
         plt.figure()
@@ -168,28 +165,27 @@ df['Calculated_BMI'] = df['Weight (kg)'] / (df['Height (m)'] ** 2)
 difference = np.abs(df['BMI'] - df['Calculated_BMI'])
 print("Average BMI difference:", difference.mean())
 
-# ==============================
+
 # TARGET ANALYSIS
-# ==============================
+
 print("\n=== TARGET ANALYSIS ===")
 
-# alege target
-target = 'Workout_Frequency (days/week)'   # poti schimba daca vrei
+target = 'Workout_Frequency (days/week)'
 
 print(f"Selected target: {target}")
 
-# tip problema
+# problem type
 if df[target].dtype in ['int64', 'float64']:
     print("Problem type: Regression")
 else:
     print("Problem type: Classification")
 
-# distributia targetului
+# target distribution
 plt.figure()
 sns.histplot(df[target], bins=20, kde=True)
 plt.title(f"Distribution of {target}")
 plt.show()
 
-# corelatii cu target
+# correlations with target
 print("\nCorrelation with target:")
 print(df.corr(numeric_only=True)[target].sort_values(ascending=False))
