@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn import preprocessing
@@ -46,6 +47,13 @@ plt.show()
 # print the model that was fitted (the regression formula)
 print(f"Workout_Frequency = {workout_estimator.coef_[0]:.2f} * {feature_name} + {workout_estimator.intercept_:.2f}")
 
+
+# EVALUATION:
+y_pred_reg = workout_estimator.predict(X_test[[feature_name]])
+print(f" Evaluation: ")
+print(f"R2 Score: {r2_score(y_test, y_pred_reg):.2f}")
+print(f"Mean Absolute Error: {mean_absolute_error(y_test, y_pred_reg):.2f}")
+
 # ==============================
 # 2. DECISION TREE CLASSIFIER
 # ==============================
@@ -91,3 +99,16 @@ plot_tree(
     filled=True
 )
 plt.show()
+
+
+
+# Confusion matrix
+cm = confusion_matrix(y_test_encoded, y_pred_cls)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=label_encoder.classes_)
+disp.plot()
+plt.show()
+
+# Overfitting check
+train_acc = accuracy_score(y_train_encoded, dtc.predict(X_train))
+test_acc = accuracy_score(y_test_encoded, y_pred_cls)
+print(f"Acuracy Train: {train_acc:.2f} vs Test: {test_acc:.2f}")
